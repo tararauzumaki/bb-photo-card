@@ -2,7 +2,7 @@
 
 A browser-based tool to generate high-quality social media sharing cards for [BigganBarta](https://bigganbarta.org).
 
-![Tool Preview](./bbar-logo-dark.png)
+![Tool Preview](./Screenshot.jpg)
 
 ## ✨ Features
 - **Privacy First:** runs entirely in the browser (no data sent to servers).
@@ -26,4 +26,4 @@ A browser-based tool to generate high-quality social media sharing cards for [Bi
 - **html2canvas** (for rendering the DOM to image)
 
 ## 📦 Deployment
-This project is live on Netlify: [Your-Netlify-Link-Here]
+This project is live on Netlify: [https://bbpcard.netlify.app/]
