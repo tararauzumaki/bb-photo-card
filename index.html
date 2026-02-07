@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Biggan Barta Social Tool</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --accent: #ffbb34;
+            --bg-page: #f3f4f6;
+            --bg-panel: #ffffff;
+            --text-main: #1f2937;
+            --text-sub: #6b7280;
+            --border: #e5e7eb;
+            --radius: 12px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * { box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* --- LAYOUT --- */
+        .app-container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* --- LEFT: CONTROLS (Sidebar) --- */
+        .sidebar {
+            width: 400px;
+            background: var(--bg-panel);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            z-index: 20;
+            box-shadow: 4px 0 24px rgba(0,0,0,0.02);
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .sidebar-header h2 {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .sidebar-header i { color: var(--primary); }
+
+        .sidebar-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+
+        /* --- FORM ELEMENTS --- */
+        .input-group { margin-bottom: 1.5rem; }
+        
+        label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        label i { color: var(--text-sub); }
+
+        input[type="text"], textarea, .file-upload-wrapper {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            background: #f9fafb;
+            color: var(--text-main);
+        }
+
+        textarea { font-family: 'Hind Siliguri', sans-serif; min-height: 100px; line-height: 1.5; resize: vertical; }
+
+        input:focus, textarea:focus {
+            border-color: var(--primary);
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        /* Custom File Input */
+        .file-upload-wrapper {
+            position: relative;
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+        input[type="file"] {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+            z-index: 2;
+        }
+        .file-custom-btn {
+            padding: 0.75rem 1rem;
+            background: #fff;
+            color: var(--text-sub);
+            font-size: 0.9rem;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .file-custom-btn i { color: var(--primary); }
+
+        /* Sliders */
+        .slider-container {
+            background: #f9fafb;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+        .slider-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 5px; }
+        .slider-label { font-size: 0.8rem; color: var(--text-sub); font-weight: 600; }
+        
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 5px;
+            appearance: none;
+            outline: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--primary);
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* Code Helper Badge */
+        .helper-box {
+            background: #fffbeb;
+            border: 1px solid #fcd34d;
+            border-radius: 6px;
+            padding: 0.75rem;
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            color: #92400e;
+        }
+        .helper-box code {
+            background: rgba(255,255,255,0.8);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-weight: 700;
+            color: #d97706;
+            border: 1px solid #fcd34d;
+            cursor: pointer;
+        }
+
+        /* Save Button */
+        .action-bar {
+            padding: 1.5rem;
+            background: var(--bg-panel);
+            border-top: 1px solid var(--border);
+        }
+        #downloadBtn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 50px; /* Pill shape */
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            transition: transform 0.1s, box-shadow 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+        #downloadBtn:active { transform: scale(0.98); box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2); }
+
+        /* --- RIGHT: PREVIEW (Main Stage) --- */
+        .main-stage {
+            flex: 1;
+            background-color: #f3f4f6;
+            background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
+            background-size: 20px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 40px;
+            overflow: hidden;
+        }
+
+        #preview-wrapper {
+            box-shadow: 0 20px 50px -10px rgba(0,0,0,0.3);
+            border-radius: 4px; /* Slight radius for preview container only, not card */
+            overflow: hidden;
+        }
+
+        /* --- THE CARD (Hidden logic remains same) --- */
+        .card-canvas {
+            width: 1080px;
+            height: 1080px;
+            background-color: #000;
+            position: relative;
+            overflow: hidden;
+            transform-origin: top left;
+        }
+
+        /* Card Layers (Same CSS as before) */
+        #bg-image { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+        .overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0) 40%, rgba(0,0,0,0.8) 80%, rgba(0,0,0,0.95) 100%);
+        }
+        .logo-area { position: absolute; top: 60px; left: 60px; z-index: 10; }
+        #card-logo { height: 80px; width: auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
+        .content-area {
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            padding: 60px;
+            color: white; font-family: 'Hind Siliguri', sans-serif;
+            display: flex; flex-direction: column; justify-content: flex-end;
+            padding-bottom: 120px;
+        }
+        .category-pill {
+            background: var(--accent); color: #000; padding: 8px 24px;
+            font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+            font-size: 24px; display: inline-block; align-self: flex-start;
+            margin-bottom: 20px; border-radius: 4px;
+        }
+        .title-text {
+            font-size: 80px; font-weight: 700; line-height: 1.1; margin: 0 0 20px 0;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+        }
+        .meta-text { font-size: 24px; opacity: 0.9; font-weight: 400; color: #e5e7eb; }
+        .footer-bar {
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 80px;
+            background: #000; display: flex; justify-content: center; align-items: center;
+            border-top: 3px solid #374151;
+        }
+        .site-url { color: #fff; font-size: 32px; font-weight: 700; letter-spacing: 2px; }
+
+
+        /* --- RESPONSIVE MOBILE UI --- */
+        @media (max-width: 768px) {
+            body { height: auto; overflow: auto; }
+            .app-container { flex-direction: column; } /* Vertical stack */
+            
+            /* Order: Preview First, Controls Second */
+            .sidebar { width: 100%; order: 2; border-right: none; box-shadow: none; overflow: visible; }
+            .main-stage { height: 400px; order: 1; padding: 20px; background-color: #111827; background-image: none; }
+            
+            .sidebar-header { display: none; } /* Hide header on mobile to save space */
+            .sidebar-content { padding-bottom: 100px; } /* Space for floating button */
+
+            /* Sticky Floating Button */
+            .action-bar {
+                position: fixed;
+                bottom: 0; left: 0; right: 0;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(5px);
+                border-top: 1px solid var(--border);
+                z-index: 100;
+                padding: 1rem;
+                box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-layer-group"></i> Card Generator</h2>
+            </div>
+
+            <div class="sidebar-content">
+                
+                <div class="input-group">
+                    <label><i class="fas fa-image"></i> Background Image</label>
+                    <div class="file-upload-wrapper">
+                        <div class="file-custom-btn"><span>Choose file...</span> <i class="fas fa-cloud-upload-alt"></i></div>
+                        <input type="file" id="imgInput" accept="image/*">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label><i class="fas fa-arrows-alt"></i> Image Position</label>
+                    <div class="slider-container">
+                        <div class="slider-row">
+                            <span class="slider-label">Horiz. (X)</span>
+                            <input type="range" id="posX" min="0" max="100" value="50">
+                        </div>
+                        <div class="slider-row">
+                            <span class="slider-label">Vert. (Y)</span>
+                            <input type="range" id="posY" min="0" max="100" value="50">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label><i class="fas fa-star"></i> Custom Logo (Optional)</label>
+                    <div class="file-upload-wrapper">
+                        <div class="file-custom-btn"><span>Default Logo</span> <i class="fas fa-cloud-upload-alt"></i></div>
+                        <input type="file" id="logoInput" accept="image/*">
+                    </div>
+                </div>
+
+                <hr style="border: 0; border-top: 1px solid var(--border); margin: 1.5rem 0;">
+
+                <div class="input-group">
+                    <label><i class="fas fa-tag"></i> Category</label>
+                    <input type="text" id="catInput" value="ARCHAEOLOGY">
+                </div>
+
+                <div class="input-group">
+                    <label><i class="fas fa-heading"></i> Title (Bengali)</label>
+                    <textarea id="titleInput">নিয়ান্ডারথালরা <span style="color:#ffbb34">৪৮,০০০ বছর</span> আগে গুহা সিংহ শিকার করত</textarea>
+                    
+                    <div class="helper-box">
+                        <i class="fas fa-lightbulb"></i> Tip: Use <code>&lt;span style="color:#ffbb34"&gt;text&lt;/span&gt;</code> to highlight text in yellow.
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label><i class="fas fa-copyright"></i> Credit / DOI</label>
+                    <input type="text" id="metaInput" value="DOI: 10.1038/s41598 | IMAGE: Julio Lacerda">
+                </div>
+            </div>
+
+            <div class="action-bar">
+                <button id="downloadBtn"><i class="fas fa-download"></i> Download Image</button>
+            </div>
+        </div>
+
+        <div class="main-stage" id="stage">
+            <div id="preview-wrapper">
+                
+                <div class="card-canvas" id="card">
+                    <img id="bg-image" src="https://images.unsplash.com/photo-1640291168377-7ecec8eb1a3f?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" crossorigin="anonymous">
+                    <div class="overlay"></div>
+
+                    <div class="logo-area">
+                        <img id="card-logo" src="./bbar-logo-dark.png" alt="Logo" crossorigin="anonymous">
+                    </div>
+
+                    <div class="content-area">
+                        <div class="category-pill" id="previewCat">জীবাশ্ম বিজ্ঞান</div>
+                        <h1 class="title-text" id="previewTitle">নিয়ান্ডারথালরা <span style="color:#ffbb34">৪৮,০০০ বছর</span> আগে গুহা সিংহ শিকার করত</h1>
+                        <div class="meta-text" id="previewMeta">DOI: 10.1038/s41598-023-42764-0 | IMAGE: Julio Lacerda/NLD</div>
+                    </div>
+
+                    <div class="footer-bar">
+                        <span class="site-url">bigganbarta.org</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+    <script>
+        // --- SCALING ---
+        function resizePreview() {
+            const stage = document.getElementById('stage');
+            const wrapper = document.getElementById('preview-wrapper');
+            const card = document.getElementById('card');
+            
+            // Padding adjustment
+            const w = stage.clientWidth - 40;
+            const h = stage.clientHeight - 40;
+            const size = Math.min(w, h); 
+
+            wrapper.style.width = size + "px";
+            wrapper.style.height = size + "px";
+
+            const scale = size / 1080;
+            card.style.transform = `scale(${scale})`;
+        }
+        window.addEventListener('load', resizePreview);
+        window.addEventListener('resize', resizePreview);
+
+        // --- INPUTS ---
+        document.getElementById('catInput').addEventListener('input', e => document.getElementById('previewCat').innerText = e.target.value);
+        document.getElementById('titleInput').addEventListener('input', e => document.getElementById('previewTitle').innerHTML = e.target.value);
+        document.getElementById('metaInput').addEventListener('input', e => document.getElementById('previewMeta').innerText = e.target.value);
+
+        // File Inputs with UI Feedback
+        const bgImg = document.getElementById('bg-image');
+        document.getElementById('imgInput').addEventListener('change', function(e) {
+            if (e.target.files[0]) {
+                // Update button text to show filename
+                e.target.parentElement.querySelector('span').innerText = e.target.files[0].name;
+                
+                const reader = new FileReader();
+                reader.onload = function(evt) { bgImg.src = evt.target.result; };
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+
+        document.getElementById('logoInput').addEventListener('change', function(e) {
+            if (e.target.files[0]) {
+                e.target.parentElement.querySelector('span').innerText = "Custom Logo Loaded";
+                const reader = new FileReader();
+                reader.onload = function(evt) { document.getElementById('card-logo').src = evt.target.result; };
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+
+        // Position
+        const px = document.getElementById('posX');
+        const py = document.getElementById('posY');
+        function moveBg() { bgImg.style.objectPosition = `${px.value}% ${py.value}%`; }
+        px.addEventListener('input', moveBg);
+        py.addEventListener('input', moveBg);
+
+        // --- DOWNLOAD ---
+        document.getElementById('downloadBtn').addEventListener('click', async () => {
+            const btn = document.getElementById('downloadBtn');
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+            const originalCard = document.getElementById('card');
+            const clone = originalCard.cloneNode(true);
+            
+            clone.style.transform = "none";
+            clone.style.position = "fixed"; clone.style.top = "-9999px"; clone.style.left = "-9999px"; clone.style.zIndex = "-1";
+            document.body.appendChild(clone);
+
+            await new Promise(r => setTimeout(r, 500));
+
+            try {
+                const canvas = await html2canvas(clone, {
+                    scale: 1, useCORS: true, allowTaint: true, backgroundColor: null
+                });
+                const link = document.createElement('a');
+                link.download = `BB-Social-${Date.now()}.png`;
+                link.href = canvas.toDataURL("image/png");
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } catch (err) {
+                alert("Error. If using external images, try uploading them manually.");
+            }
+
+            document.body.removeChild(clone);
+            btn.innerHTML = originalHTML;
+        });
+    </script>
+</body>
+</html>
