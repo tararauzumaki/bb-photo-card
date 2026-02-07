@@ -2,8 +2,7 @@
 
 A browser-based tool to generate high-quality social media sharing cards for [BigganBarta](https://bigganbarta.org).
 
-![Tool Preview](./logo.png) 
-*(You can replace this path with a screenshot of the tool later)*
+![Tool Preview](./bbar-logo-dark.png)
 
 ## ✨ Features
 - **Privacy First:** runs entirely in the browser (no data sent to servers).
